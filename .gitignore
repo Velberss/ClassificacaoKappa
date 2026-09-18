@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+backend/dist/
+frontend/dist/
+
+# Environment files and secrets
+.env
+.env.*
+backend/.env
+frontend/.env
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# Local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+temp/
+.tmp/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Keep the source data files available for manual seed operations.
+!data/excel/
+!data/excel/*.xlsx
