@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3';
+import type sqlite3 from 'sqlite3';
 import { Pool, QueryResultRow } from 'pg';
 import path from 'path';
 import fs from 'fs';
@@ -28,6 +28,9 @@ export class Database {
       return;
     }
 
+    const sqliteModule = await import('sqlite3');
+    const sqlite = sqliteModule.default;
+
     return new Promise((resolve, reject) => {
       const dbDir = path.dirname(DB_PATH);
 
@@ -36,7 +39,7 @@ export class Database {
         fs.mkdirSync(dbDir, { recursive: true });
       }
 
-      this.db = new sqlite3.Database(DB_PATH, (err) => {
+      this.db = new sqlite.Database(DB_PATH, (err) => {
         if (err) {
           console.error('❌ Erro ao conectar ao banco de dados:', err);
           reject(err);
