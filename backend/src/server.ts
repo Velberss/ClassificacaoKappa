@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { database } from './config/database';
 import { ensureEvaluatorUsers } from './services/user';
+import { ensureComments } from './services/commentInitializer';
 import commentsRouter from './routes/comments';
 import authRouter from './routes/auth';
 import annotationsRouter from './routes/annotations';
@@ -152,6 +153,7 @@ async function startServer() {
     // Inicializar banco de dados
     console.log('\n🗄️  Inicializando banco de dados...');
     await database.initialize();
+    await ensureComments();
     console.log('👥 Verificando usuários avaliadores...');
     await ensureEvaluatorUsers();
 
