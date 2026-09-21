@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { database } from './config/database';
-import { createUser } from './services/user';
+import { ensureEvaluatorUsers } from './services/user';
 
 dotenv.config();
 
@@ -20,28 +20,10 @@ if (isProduction) {
   }
 }
 
-const users = [
-  { name: 'Avaliador 1', password: process.env.EVALUATOR_1_PASSWORD || 'Avaliador1@TCC' },
-  { name: 'Avaliador 2', password: process.env.EVALUATOR_2_PASSWORD || 'Avaliador2@TCC' },
-  { name: 'Avaliador 3', password: process.env.EVALUATOR_3_PASSWORD || 'Avaliador3@TCC' },
-  { name: 'Avaliador 4', password: process.env.EVALUATOR_4_PASSWORD || 'Avaliador4@TCC' },
-];
-
 async function seedUsers(): Promise<void> {
   try {
     await database.initialize();
-    for (const user of users) {
-      try {
-        await createUser(user.name, user.password);
-        console.log(`✅ ${user.name} criado`);
-      } catch (error) {
-        if ((error as Error).message === 'Usuário já existe') {
-          console.log(`ℹ️  ${user.name} já existe`);
-          continue;
-        }
-        throw error;
-      }
-    }
+    await ensureEvaluatorUsers();
   } catch (error) {
     console.error('❌ Erro ao criar usuários:', error);
     process.exitCode = 1;
